@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shower Presentation Engine</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="./global_style.css">
+    <link rel="stylesheet" href="./local_style.css">
+    <link rel="stylesheet" href="./my_theme.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+        }
+    </style>
+</head>
+<body class="shower list">
+
+    <header class="caption">
+        <h1>CSS value processing</h1>
+        <p>София Валитова, ВКонтакте</p>
+    </header>
+
+    <section class="slide" id="head">
+        <h2 class="shout shrink">CSS value processing</h2>
+        <style>
+            .slide#head::after {
+                visibility: hidden;
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2 style="font-size: 45px" class="">CSS иногда работает не так, как я ожидаю</h2>
+        <pre lang="html" style="font-size: 17px" class="next">
+            <code>&lt;div class="blue"> CSS &lt;/div></code>
+            <code>&lt;style></code>
+            <code>  .blue { </code>
+            <code>    color: blue !important;</code>
+            <code>    animation: anim 2s infinite;</code>
+            <code>  }</code>
+            <code>  .@keyframes anim {</code>
+            <code>    50% {color: chartreuse;}</code>
+            <code>  }</code>
+            <code>&lt;/style></code>
+        </pre>
+    </section>
+
+    <section class="slide" id="example">
+        <h2 style="font-size: 45px" class="">CSS иногда работает не так, как я ожидаю</h2>
+        <p class="example shout">CSS</p>
+        <style>
+            #example .example {
+                color: red !important;
+                animation: anim 2s infinite;
+                font-size:200px;
+            }
+            @keyframes anim {
+                50% {
+                    color: chartreuse;
+                }
+            }
+        </style>
+    </section>
+
+
+    <!--    <section class="slide mini-block">-->
+<!--        <h2>Предыстория</h2>-->
+<!--        <p>CSS иногда работает не так, как я ожидаю</p>-->
+<!--        <div class="block" style="font-size: 19px">-->
+<!--            <pre lang="css">-->
+<!--                <code>font-size: 10px;</code>-->
+<!--            </pre>-->
+<!--            <div class="block">-->
+<!--                <pre lang="css">-->
+<!--                    <code>height: 5em;<span class="next"> // => 50px </span></code>-->
+<!--                </pre>-->
+<!--                <div class="block">-->
+<!--                    <pre lang="css" style="margin: 0 !important;">-->
+<!--                        <code class="no-code">font-size: 20px;</code>-->
+<!--                        <code class="no-code">height: inherit;<span class="next"> // => 50px</span> </code>-->
+<!--                    </pre>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+
+<!--    <section class="slide">-->
+<!--        <h2>Предыстория</h2>-->
+<!--        <p>CSS иногда работает не так, как я ожидаю</p>-->
+<!--        <pre lang="html" style="font-size: 20px">-->
+<!--            <code>&lt;div class="blue" style="color: green"></code>-->
+<!--            <code>&lt;span style="color: purple">CSS&lt;/span> &lt;/div></code>-->
+<!--            <code>&lt;style></code>-->
+<!--            <code>  .blue { color: blue; }</code>-->
+<!--            <code>&lt;/style></code>-->
+<!--        </pre>-->
+<!--    </section>-->
+
+<!--    <section class="slide">-->
+<!--        <h2>Предыстория</h2>-->
+<!--        <p>CSS иногда работает не так, как я ожидаю</p>-->
+<!--        <pre lang="html" style="font-size: 20px">-->
+<!--            <code>&lt;div class="blue" style="color: green"> CSS &lt;/div></code>-->
+
+<!--            <code>&lt;span style="color: purple">CSS&lt;/span> &lt;/div></code>-->
+<!--            <code>&lt;style></code>-->
+<!--            <code>  .blue { color: blue; }</code>-->
+<!--            <code>&lt;/style></code>-->
+<!--        </pre>-->
+<!--        <p class="time shrink shout">слова CSS раскрашены</p>-->
+<!--    </section>-->
+
+<!--    <section class="slide">-->
+<!--        <h2>Предыстория</h2>-->
+<!--        <p>CSS иногда работает не так, как я ожидаю</p>-->
+<!--        <pre lang="html" style="font-size: 20px">-->
+<!--            <code>&lt;div id="redDiv" class="blue1 blue2"> CSS &lt;/div></code>-->
+<!--            <code>&lt;style></code>-->
+<!--            <code>  .blue1 { color: blue; }</code>-->
+<!--            <code>  .blue2 { color: blue; }</code>-->
+<!--            <code>  #redDiv { color: red; }</code>-->
+<!--            <code>&lt;/style></code>-->
+<!--        </pre>-->
+<!--    </section>-->
+
+<!--    <section class="slide">-->
+<!--        <h2>Предыстория</h2>-->
+<!--        <p>CSS иногда работает не так, как я ожидаю</p>-->
+<!--        <pre lang="html" style="font-size: 20px">-->
+<!--            <code>&lt;div id="redDiv" class="blue1 ... blue256"> CSS &lt;/div></code>-->
+<!--            <code>&lt;style></code>-->
+<!--            <code>  .blue1 { color: blue; }</code>-->
+<!--            <code>  ...</code>-->
+<!--            <code>  .blue256 { ... }</code>-->
+<!--            <code>  #redDiv { color: red; }</code>-->
+<!--            <code>&lt;/style></code>-->
+<!--        </pre>-->
+<!--    </section>-->
+
+<!--    <section class="slide">-->
+<!--        <h2>Предыстория</h2>-->
+<!--        <p>CSS иногда работает не так, как я ожидаю</p>-->
+<!--        <pre lang="html" style="font-size: 20px">-->
+<!--            <code>&lt;div id="redDiv" class="blue1 ... blue65536"> CSS &lt;/div></code>-->
+<!--            <code>&lt;style></code>-->
+<!--            <code>  .blue1 { color: blue; }</code>-->
+<!--            <code>  ...</code>-->
+<!--            <code>  .blue65536 { ... }</code>-->
+<!--            <code>  #redDiv { color: red; }</code>-->
+<!--            <code>&lt;/style></code>-->
+<!--        </pre>-->
+<!--    </section>-->
+
+    <section class="slide">
+        <h2>Спецификация</h2>
+        <img src="./access/speck.png" alt="" class="picture">
+    </section>
+
+    <section class="slide">
+        <h2 class="">Кратко</h2>
+        <ul>
+            <li class="next">Выбрать объявления свойства, которые теоретически подходят для заданного элемента</li>
+            <li class="next">Выбрать из них то одно, которое подходит, по заданным правилам</li>
+            <li class="next">Сделать его удобным для наследования</li>
+            <li class="next">Сделать его удобным для отрисовки</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <img src="./access/vp.png" alt=""  class="picture">
+    </section>
+
+    <section class="slide">
+        <h2 class="">По спецификации</h2>
+        <ol>
+            <li class="">Declared value</li>
+            <li class="">Cascaded value</li>
+            <li class="">Specified value</li>
+            <li class="">Computed value</li>
+            <li class="">Used Value</li>
+            <li class="">Actual Value</li>
+        </ol>
+    </section>
+
+
+    <section class="slide">
+        <h2>Declared value</h2>
+        <p>Сбор всех деклараций свойства, применимых к элементу</p>
+        <ul>
+            <li class="next">@media, @supports</li>
+            <li class="next">Подходящий селектор</li>
+            <li class="next">Type checking</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Type checking</h2>
+        <img src="./access/text_shadow.png" alt="" class="picture">
+    </section>
+
+    <section class="slide">
+        <h2>Type checking</h2>
+        <pre lang="vds">
+            <code>&lt;'text-shadow'> = </code>
+            <code>  none | [ &lt;color>? && &lt;length>{2,3} ]#</code>
+        </pre>
+        <pre lang="css">
+            <code class="next true">text-shadow: black 0.1em 0.1em 0.2em;</code>
+            <code class="next true">text-shadow: 0.1em 0.1em black;</code>
+            <code class="next false">text-shadow: 0.1em</code>
+        </pre>
+        <a href="https://www.youtube.com/watch?v=o3oFkckaJGo&list=PLcXJ90eZ2bxjlewIlnsC_dQZeX7BHtnut&index=3" class="next">подробнее про типы данных в CSS</a>
+    </section>
+
+    <section class="slide">
+        <h2>Declared value</h2>
+        <pre lang="html">
+            <code>&lt;div class="a"> CSS &lt;/div></code>
+            <code>&lt;style></code>
+            <code class="next next-light true">  .a { text-shadow: 0.1em 0.1em black; }</code>
+            <code class="next next-light false">  .a { text-shadow: 0.1em }</code>
+            <code>&lt;/style></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <img src="./access/declared_value.png" alt="" class="picture center" >
+    </section>
+
+    <section class="slide">
+        <h2>Cascaded value</h2>
+        <p>Каскад принимает неупорядоченный список объявленных значений, сортирует их по приоритету их объявления, и выводит одно значение.</p>
+        <pre lang="html" class="next">
+            <code>&lt;div style="color: green"></code>
+            <code>  &lt;span style="color: purple"> CSS &lt;/span></code>
+            <code>&lt;/div></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Cascaded value</h2>
+        <pre lang="html">
+            <code>&lt;div class="blue" id="red"> <span style="color: red;">CSS</span> &lt;/div></code>
+            <code>&lt;style></code>
+            <code>  .blue { color: blue; }</code>
+            <code>  #red { color: red; }</code>
+            <code>&lt;/style></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Cascaded value</h2>
+        <pre lang="html">
+            <code>&lt;div class="blue" id="red"> <span style="color: blue;">CSS</span> &lt;/div></code>
+            <code>&lt;style></code>
+            <code>  .blue { color: blue !important; }</code>
+            <code>  #red { color: red; }</code>
+            <code>&lt;/style></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Cascaded value</h2>
+        <pre lang="html">
+            <code>&lt;div class="blue" id="red"> <span style="color: red;">CSS</span> &lt;/div></code>
+            <code>&lt;style></code>
+            <code>  .blue { color: blue !important; }</code>
+            <code>  #red { color: red !important; }</code>
+            <code>&lt;/style></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2><a href="https://www.w3.org/TR/css-cascade-4/#cascading-origins">Cascaded value</a></h2>
+        <img src="./access/cascade_spec.png" alt="" class="picture">
+    </section>
+
+<!--    <section class="slide">-->
+<!--        <h2>Cascaded value</h2>-->
+<!--        <ul style="font-size: 22px">-->
+<!--            <li>Стили во время transition-переходов</li>-->
+<!--            <li>Браузерные стили с !important</li>-->
+<!--            <li>Пользовательские стили с !important</li>-->
+<!--            <li>Авторские стили с !important</li>-->
+<!--            <li>Стили во время анимаций</li>-->
+<!--            <li class="  ">Обычные авторские стили</li>-->
+<!--            <li>Обычные пользовательские стили</li>-->
+<!--            <li>Обычные браузерные стили</li>-->
+<!--        </ul>-->
+<!--    </section>-->
+
+    <section class="slide">
+        <h2>Cascaded value</h2>
+        <img src="./access/specifid.png" alt="" class="picture">
+    </section>
+
+    <section class="slide">
+        <h2>Коэффициент специфичности</h2>
+        <p>Селектора деляться на 3 уровня:</p>
+        <table>
+            <tr class="next">
+                <td> #id</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr class="next">
+                <td>.class, :hover, [name="value"]</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+            <tr class="next">
+                <td>#id [name="value"]</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="slide">
+        <h2>Коэффициент специфичности</h2>
+        <table>
+                <tr class="next">
+                    <td>span</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+                <tr class="next">
+                    <td>.class #id</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+                <tr class="next">
+                    <td>.class #id::before:hover</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                </tr>
+                <tr class="next">
+                    <td>#id [name="value"]</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+        </table>
+    </section>
+
+
+    <section class="slide">
+        <h2>Коэффициент специфичности</h2>
+        <table>
+            <tr class="">
+                <td>span</td>
+                <td>0 * 100</td>
+                <td>0 * 10</td>
+                <td>1 * 1</td>
+            </tr>
+            <tr class="">
+                <td>.class #id</td>
+                <td>1 * 100</td>
+                <td>1 * 10</td>
+                <td>0 * 1</td>
+            </tr>
+            <tr class="">
+                <td>.class #id::before:hover</td>
+                <td>1 * 100</td>
+                <td>2 * 10</td>
+                <td>1 * 1</td>
+            </tr>
+            <tr class="">
+                <td>#id [name="value"]</td>
+                <td>1 * 100</td>
+                <td>1 * 10</td>
+                <td>0 * 1</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="slide">
+        <h2>Коэффициент специфичности</h2>
+        <table>
+            <tr class="">
+                <td>span</td>
+                <td class="plus_after">0 * 100</td>
+                <td class="plus_after">0 * 10</td>
+                <td class="plus_equal">1 * 1</td>
+                <td class="code_color">001</td>
+            </tr>
+            <tr class="">
+                <td>.class #id</td>
+                <td class="plus_after">1 * 100</td>
+                <td class="plus_after">1 * 10</td>
+                <td class="plus_equal">0 * 1</td>
+                <td class="code_color">110</td>
+            </tr>
+            <tr class="next next-light true">
+                <td>.class #id::before:hover</td>
+                <td class="plus_after">1 * 100</td>
+                <td class="plus_after">2 * 10</td>
+                <td class="plus_equal">1 * 1</td>
+                <td class="code_color">121</td>
+            </tr>
+            <tr class="">
+                <td>#id [name="value"]</td>
+                <td class="plus_after">1 * 100</td>
+                <td class="plus_after">1 * 10</td>
+                <td class="plus_equal">0 * 1</td>
+                <td class="code_color">110</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="slide">
+        <h2><a href="https://www.w3.org/TR/selectors-3/#specificity">Коэффициент специфичности</a></h2>
+        <img src="./access/selectors.png" alt="" class="picture">
+    </section>
+
+    <section class="slide">
+        <h2>Коэффициент специфичности</h2>
+        <table>
+            <tr class="">
+                <td>span</td>
+                <td class="plus_after">0 * 2^32</td>
+                <td class="plus_after">0 * 2^16</td>
+                <td class="">1 * 2^8</td>
+            </tr>
+            <tr class="">
+                <td>.class #id</td>
+                <td class="plus_after">1 * 2^32</td>
+                <td class="plus_after">1 * 2^16</td>
+                <td class="">0 * 2^8</td>
+            </tr>
+            <tr class="  true">
+                <td>.class #id::before:hover</td>
+                <td class="plus_after">1 * 2^32</td>
+                <td class="plus_after">2 * 2^16</td>
+                <td class="">1 * 2^8</td>
+            </tr>
+            <tr class="">
+                <td>#id [name="value"]</td>
+                <td class="plus_after">1 * 2^32</td>
+                <td class="plus_after">1 * 2^16</td>
+                <td class="">0 * 2^8</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="slide">
+        <h2>Коэффициент специфичности</h2>
+        <img src="./access/habr_256.png" alt="" class="picture">
+    </section>
+
+    <section class="slide">
+        <h2 style="font-size: 45px" class="">CSS иногда работает не так, как я ожидаю</h2>
+        <pre lang="html" style="font-size: 17px" class="">
+            <code>&lt;div class="blue"> CSS &lt;/div></code>
+            <code>&lt;style></code>
+            <code>  .blue { </code>
+            <code>    color: blue !important;</code>
+            <code>    animation: anim 3s infinite;</code>
+            <code>  }</code>
+            <code>  .@keyframes anim {</code>
+            <code>    50% {color: chartreuse;}</code>
+            <code>  }</code>
+            <code>&lt;/style></code>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Cascaded value</h2>
+        <img src="./access/cascade_spec.png" alt="" class="picture">
+    </section>
+
+
+    <section class="slide" id="example">
+        <h2 style="font-size: 45px" class="">CSS иногда работает не так, как я ожидаю</h2>
+        <p class="example shout">CSS</p>
+        <style>
+            #example .example {
+                color: red !important;
+                animation: anim 3s infinite;
+                font-size: 200px;
+                margin-top:30px;
+            }
+            @keyframes anim {
+                50% {
+                    color: chartreuse;
+                }
+            }
+        </style>
+    </section>
+
+    <section class="slide">
+        <h2>Cascaded value</h2>
+        <img src="./access/chrome_bug.png" alt="" class="picture">
+    </section>
+
+    <section class="slide">
+        <img src="./access/twitter_2.png" alt="" class="picture center" style="width: 40vw">
+    </section>
+
+    <section class="slide">
+        <img src="./access/twitter.png" alt="" class="picture center">
+    </section>
+
+    <section class="slide">
+        <h2>Поставьте звёдочку багу</h2>
+        <img src="./access/qr.png" alt="" class=" center" style="width: 20vw; margin-top: 40px">
+    </section>
+
+    <section class="slide">
+        <h2>Specified value</h2>
+        <pre lang="html" style="font-size: 20px" class="next">
+            <code>&lt;div> CSS &lt;/div></code>
+        </pre>
+
+        <pre lang="html" style="font-size: 20px" class="next">
+            <code>color: ??? </code>
+            <div class="next">
+                <code>margin: ??? </code>
+                <code class="">padding: ??? </code>
+            </div>
+        </pre>
+    </section>
+
+    <section class="slide">
+        <h2>Initial value</h2>
+        <img src="./access/margin.png" alt="" class=" picture">
+    </section>
+
+    <section class="slide">
+        <h2>Computed value</h2>
+        <p>Значение, которое наследуется</p>
+        <div class="block next" >
+            <pre lang="css">
+                <code>height: 100px;<span class="next"> // => 100px</span></code>
+            </pre>
+            <div class="block">
+                <pre lang="css">
+                    <code>height: inherit<span class="next"> // => 100px </span></code>
+                </pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide no-print">
+        <h2>Computed value</h2>
+        <div class="block">
+            <pre lang="css">
+                <code>height: 100px;<span class="next"> // => 100px</span></code>
+            </pre>
+            <div class="block">
+                <pre lang="css">
+                    <code>height: 50%;<span class="next"> // => 50px </span></code>
+                </pre>
+                <div class="block">
+                    <pre lang="css">
+                        <code>height: inherit;<span class="next"> // => 25px</span> </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Computed value</h2>
+        <div class="block">
+            <pre lang="css">
+                <code>height: 100px; // => 100px</code>
+            </pre>
+            <div class="block">
+                <pre lang="css">
+                    <code>height: 50%; // => 50px<span class=""> CV = 50%</span></code>
+                </pre>
+                <div class="block">
+                    <pre lang="css">
+                        <code>height: inherit; // => 25px<span class=""> CV = 50%</span> </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Computed value</h2>
+        <div class="block">
+            <pre lang="css">
+                <code>font-size: 10px;<span class=""></span></code>
+            </pre>
+            <div class="block">
+                <pre lang="css">
+                    <code>height: 5em;<span class="next"> // => 50px </span></code>
+                </pre>
+                <div class="block">
+                    <pre lang="css" style="margin: 0 !important;">
+                        <code class="no-code">font-size: 20px;</code>
+                        <code class="no-code">height: inherit;<span class="next"> // => 50px</span> </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Computed value</h2>
+        <div class="block">
+            <pre lang="css">
+                <code>font-size: 10px;<span class=""></span></code>
+            </pre>
+            <div class="block">
+                <pre lang="css">
+                    <code>height: 5em;<span class=""> // => 50px</span><span class=""> CV=50px </span></code>
+                </pre>
+                <div class="block">
+                    <pre lang="css" style="margin: 0 !important;">
+                        <code class="no-code">font-size: 20px;</code>
+                        <code class="no-code">height: inherit;<span class=""> // => 50px<span class=""> CV=50px </span></span> </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Used Values</h2>
+        <p> - результат взятия computed value и завершения любых оставшихся вычислений, чтобы сделать его абсолютным теоретическим значением, используемым в макете документа.</p>
+        <ul>
+            <li class="next">вычисление %</li>
+            <li class="next">вычисление calc</li>
+            <li class="next">...</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Used Values</h2>
+        <div class="block">
+                <pre lang="css">
+                    <code class="no-code">height: 70px;</code>
+                </pre>
+            <div class="block">
+                    <pre lang="css">
+                        <code class="no-code">height: 13%;<span class="next"> // CV=13% => UV=9.1px</span> </code>
+                    </pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Actual Values</h2>
+        <p>Значение преобразуется на основе ограничений среды отображения.</p>
+        <div class="block next">
+                <pre lang="css">
+                    <code class="no-code">height: 70px;</code>
+                </pre>
+            <div class="block">
+                    <pre lang="css">
+                        <code class="no-code">height: 13%;<span class=""> // UV=9.1px</span> <span class="next"> => AV=9px</span> </code>
+                    </pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Несколько слов про calc</h2>
+        <img src="./access/calc.png" alt="" class="picture center" style="width: 40vw; margin-top: 40px">
+    </section>
+
+    <section class="slide">
+        <h2>CSS Type Checking</h2>
+        <p>Проверка соответствия значения свойства его грамматике</p>
+        <img src="./access/css_height.png" style="margin-top: 268px; max-height: none;" class="cover">
+    </section>
+
+    <section class="slide">
+        <h2>CSS Type Checking</h2>
+        <p>Проверка соответствия значения свойства его грамматике</p>
+        <img src="./access/css_height_2.png" style="margin-top: 86px; max-height: none;" class="cover">
+
+        <div class=" term" style="height: 40px; position: absolute; top: 56%; left: 90px; width: 325px"></div>
+    </section>
+
+    <section class="slide">
+        <h2>Несколько слов про calc</h2>
+        <img src="./access/calc.png" alt="" class="picture ">
+    </section>
+
+    <section class="slide">
+        <h2>CSS Type Checking</h2>
+        <pre lang="css" class="">
+            <code><span class="crossed-out">height: -12px</span>        // => Initial Value</code>
+            <code class="">height: calc(-12px)  // => 0px</code>
+        </pre>
+
+        <pre lang="css" class="">
+            <code><span class="crossed-out">height: -12s</span>         // => Initial Value</code>
+            <code class=""><span class="crossed-out">height: calc(-12s)</span>   // => Initial Value</code>
+        </pre>
+
+        <p class="next">Проверка финального типа<span class="next">, но не диапазона</span></p>
+    </section>
+
+    <section class="slide">
+        <h2>Несколько слов про calc</h2>
+        <div class="block">
+            <pre lang="css">
+                <code>height: 100px;<span class="next"> // => CV=100px</span></code>
+            </pre>
+            <div class="block">
+                <pre lang="css">
+                    <code>height: calc(50% - 25px);<span class="next">// => CV=calc(50% - 25px) </span></code>
+                </pre>
+                <div class="block">
+                    <pre lang="css">
+                        <code>height: inherit;<span class="next"> // => CV=calc(50% - 25px) </span> </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Несколько слов про calc</h2>
+        <div class="block">
+            <pre lang="css">
+                <code>font-size: 10px;<span class="next"> // => CV=100px</span></code>
+            </pre>
+            <div class="block">
+                <pre lang="css">
+                    <code>height: calc(100px - 5em); <span class="next">// => CV=calc(50px) </span></code>
+                </pre>
+                <div class="block">
+                    <pre lang="css">
+                        <code>height: inherit;<span class="next"> // => CV=calc(50px) </span> </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide">
+        <h2>Итого</h2>
+        <ul>
+            <li class="next">Есть алгоритм вычисления значения CSS-свойства, он описан в спеке.</li>
+            <li class="next">Он включает в себя каскад и не только</li>
+            <li class="next">Каскадные таблицы стилей не везде следуют спецификации каскада</li>
+            <li class="next">Спецификации читать вообще полезно</li>
+            <li class="next">Если спека сложная, понять ее помогут эксперименты в браузере</li>
+            <li class="next" style="opacity: 0.7">Мы действительно можем повлиять на браузеры</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>Источники</h2>
+        <ul>
+            <li>Спецификация <a target="_blank" href="https://www.w3.org/TR/css-cascade-4/">css-cascade-4</a></li>
+            <li><a target="_blank" href="https://css-live.ru/css/nikto-ne-znaet-css-specifichnost-ne-kaskad.html">Специфичность не каскад</a></li>
+            <li><a target="_blank" href="https://css-live.ru/css/pravilnaya-shpargalka-po-css-kaskadu.html">Правильная шпаргалка по CSS-каскаду</a></li>
+            <li><a target="_blank" href="https://lists.w3.org/Archives/Public/www-style/">Почтовая расслыка</a> www-style</li>
+        </ul>
+    </section>
+
+    <section class="slide">
+        <h2>София Валитова из <a href="vk.com">ВКонтакте</a></h2>
+        <ul>
+            <li><a>ariarzer@gmail.com</a></li>
+            <li>Twitter – <a href="https://twitter.com/ariarzer">@ariarzer</a></li>
+            <li>ВКонтакте – <a href="https://vk.com/ariarzer">@ariarzer</a></li>
+            <li>Telegram – <a href="https://twitter.com/ariarzer">@ariarzer</a></li>
+        </ul>
+
+        <p>Презентация сделана с помощью <a href="https://shwr.me/">Shower</a></p>
+    </section>
+
+    <footer class="badge">
+        <a href="https://github.com/shower/shower">Fork me on GitHub</a>
+    </footer>
+
+    <div class="progress"></div>
+
+    <script src="./syntax.js"></script>
+
+    <script src="shower/shower.min.js"></script>
+</body>
+</html>
+
+

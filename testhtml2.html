@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div class="class" style="color: blue" id="id">Lorem</div>
+<style>
+    .class {
+        color: red !important;
+        animation: anim 2s infinite;
+    }
+    @keyframes anim {
+        50%{
+            color: darkslateblue;
+        }
+    }
+    #id {
+        color: purple;
+    }
+    @media (max-width: 500px){
+        .class {
+            color: green;
+        }
+    }
+    @media (min-width: 500px){
+        .class {
+            color: green;
+        }
+    }
+</style>
+</body>
+</html>
+
+
+<!--<div> CSS </div>-->
+<!--<style>-->
+<!--    div {-->
+<!--        height: calc(-12px);-->
+<!--        height: -12px;-->
+<!--    }-->
+<!--</style>-->
